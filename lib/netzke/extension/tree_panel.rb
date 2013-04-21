@@ -11,13 +11,13 @@ class Netzke::Extension::TreePanel < Netzke::Base
   extend ActiveSupport::Memoizable
 
   self.default_instance_config = {
-      :indicate_leafs => true,
-      :auto_scroll => false,
-      :root_visible => false,
-      :load_inline_data => false,
-      :enable_pagination => false,
-      :rows_per_page => 30,
-      :treecolumn => 'tree' # The default name of the column, that will be the treecolumn
+    :indicate_leafs => true,
+    :auto_scroll => false,
+    :root_visible => false,
+    :load_inline_data => false,
+    :enable_pagination => false,
+    :rows_per_page => 30,
+    :treecolumn => 'tree' # The default name of the column, that will be the treecolumn
   }
 
   js_configure do |c|
@@ -51,7 +51,6 @@ class Netzke::Extension::TreePanel < Netzke::Base
   end
 
   # Sets the xtype to 'treecolumn' for the column with name equal to the :treecolumn value of the config
-  # TODO: does not work. fixit
   def set_default_xtype(c)
     c[:xtype] = 'treecolumn' if c[:name].to_s == config[:treecolumn].to_s
   end
@@ -111,12 +110,6 @@ class Netzke::Extension::TreePanel < Netzke::Base
   # @param [Array] records
   # @return [Array] the serialized data
   def serialize_data(records)
-=begin
-    records.map{|r|
-      data_adapter.record_to_hash(r, final_columns(:with_meta => true)).merge(:leaf=> leaf?(r))
-    }
-=end
-
     records.map { |r|
       data_adapter.record_to_hash(r, final_columns(:with_meta => true)).tap { |h|
 

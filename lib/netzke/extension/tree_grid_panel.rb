@@ -18,7 +18,6 @@ class Netzke::Extension::TreeGridPanel < Netzke::Basepack::Grid
   def js_configure c
     c.root_visible ||= false
     super
-    #c.columns_order = []
   end
 
 
@@ -40,26 +39,6 @@ class Netzke::Extension::TreeGridPanel < Netzke::Basepack::Grid
     super
 
   end
-
-=begin
-  def get_data(*args)
-    params = args.first || {} # params are optional!
-    if !config[:prohibit_read]
-      {}.tap do |res|
-        records = get_records(params)
-        res[:data] = records.map{|r|
-          data_adapter.record_to_array(r, final_columns(:with_meta => true)) + config[:extra_fields].map{|f|
-            name = f[:name].underscore.to_sym
-            send("#{name}#{f[:type] == 'boolean' ? '?' : ''}", r)
-          }
-        }
-      end
-    else
-      flash :error => "You don't have permissions to read data"
-      { :netzke_feedback => @flash }
-    end
-  end
-=end
 
   def leaf? r
     false
