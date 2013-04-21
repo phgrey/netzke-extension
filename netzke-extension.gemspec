@@ -4,16 +4,21 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'netzke-extension/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "netzke-extension"
+  gem.name          = 'netzke-extension'
   gem.version       = Netzke::Extension::VERSION
-  gem.authors       = ["phgrey"]
-  gem.email         = ["phgrey@gmail.com"]
+  gem.authors       = ['phgrey']
+  gem.email         = ['phgrey@gmail.com']
   gem.description   = %q{Several components + coffee-script-written code }
   gem.summary       = %q{My own netzke extensions}
-  gem.homepage      = ""
+  gem.homepage      = ''
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
+
+  gem.add_development_dependency 'rspec'
+  gem.add_dependency 'netzke-core', '~> 0.8.0'
+  gem.add_dependency 'netzke-basepack', '~> 0.8.0'
+  gem.add_dependency 'coffee-script'
 end
