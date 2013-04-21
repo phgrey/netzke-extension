@@ -10,5 +10,8 @@ module Netzke
     #Make assets auto-loadable
     class Engine < Rails::Engine; end  if defined? ::Rails
 
+    def self.version_string
+      "Version is #{Netzke::Extension::VERSION}"
+    end
   end
 end
