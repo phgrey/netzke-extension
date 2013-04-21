@@ -8,8 +8,8 @@ Gem::Specification.new do |gem|
   gem.version       = Netzke::Extension::VERSION
   gem.authors       = ["phgrey"]
   gem.email         = ["phgrey@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.description   = %q{Several components + coffee-script-written code }
+  gem.summary       = %q{My own netzke extensions}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)

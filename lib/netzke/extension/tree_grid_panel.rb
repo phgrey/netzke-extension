@@ -18,16 +18,19 @@ class Netzke::Extension::TreeGridPanel < Netzke::Basepack::Grid
   def js_configure c
     c.root_visible ||= false
     super
+    c.pri = config.pri if config.pri != data_class.primary_key
   end
 
 
   def configure(c)
+    c.pri = (c.pri || data_class.primary_key)#.to_s.camelize(:lower)
     c.columns = [c.column.merge(:flex => 1,:xtype => 'treecolumn')] if c.columns.nil?
     #we'll remove this columns on client before configuring the tree. they'll be sent to model only
     c.columns += [
         {:name=> 'leaf', :type => 'boolean', :getter => ->(r){ leaf? r }, :extra => true },
         {:name => 'expanded', :type => 'boolean', :getter => ->(r){ expanded? r }, :extra => true}
     ]
+    c.columns << {:name => c.pri, :type => 'string', :getter => ->(r){ send(c.pri.to_s, r) }, :extra => true} if c.pri != data_class.primary_key
 
     c.load_inline_data = false
     c.enable_edit_in_form ||= false

@@ -1,6 +1,5 @@
 # Here we'll create mixin to override some functions
 # defined in Basepack.GridPanel
-# !TODO: move it to the gem's assets folder
 
 Ext.define 'Netzke.mixins.Netzke.Extension.TreeGridPanel', {
   override: 'Netzke.classes.Netzke.Extension.TreeGridPanel',

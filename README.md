@@ -1,6 +1,8 @@
 # Netzke::Extension
 
-TODO: Write a gem description
+There are several additional components and client-scripts (written on coffeeScript and included using Rails Assets Pipeline)
+PLEASE DO NOT USE THIS IN PRODUCTION PROJECTS
+THEESE CODE IS NOR TESTED NEITHER PROFILED
 
 ## Installation
 
