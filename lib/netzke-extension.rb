@@ -1,23 +1,14 @@
 require "netzke-extension/version"
 
+require 'active_support/dependencies'
 
+# Make components auto-loadable
+ActiveSupport::Dependencies.autoload_paths << File.dirname(__FILE__)
 
 module Netzke
   module Extension
-    if defined? ::Rails
-      class Engine < Rails::Engine; end
-    end
+    #Make assets auto-loadable
+    class Engine < Rails::Engine; end  if defined? ::Rails
+
   end
 end
-
-=begin
-#!TODO: in fact we did not overwtite the base. fixit
-  require 'netzke/core/view_ext'
-
-  ActiveSupport.on_load(:action_view) do
-    include Netzke::Core::ViewExt
-  end
-=end
-
-
-
