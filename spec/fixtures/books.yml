@@ -1,0 +1,19 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  title: Separate Reality
+  presence: true
+  on_sell: 15.12.1983
+  price: 123.45
+
+two:
+  title: Second Reality
+  presence: false
+  on_sell: 03.02.1973
+  price: 123.45
+
+three:
+  title: Third Reality
+  presence: true
+  on_sell: 10.08.1993
+  price: 123.45
