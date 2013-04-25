@@ -1,3 +1,7 @@
+require 'netzke-core'
+require 'netzke/basepack/attr_config'
+require 'netzke/basepack/columns'
+require 'netzke/basepack/data_accessor'
 require 'netzke/basepack/grid'
 
 class Netzke::Extension::TreeGridPanel < Netzke::Basepack::Grid

@@ -5,7 +5,7 @@ class CreateBooks < ActiveRecord::Migration
       t.float :price
       t.date :on_sell
       t.boolean :presence
-
+      t.references :category
       t.timestamps
     end
   end

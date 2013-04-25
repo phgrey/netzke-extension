@@ -1,3 +1,4 @@
+=begin
 require 'spec_helper'
 
 describe Netzke::Extension::TreeGridPanel do
@@ -8,3 +9,4 @@ describe Netzke::Extension::TreeGridPanel do
     element_data.atomic_weight.should == '15.9994'
   end
 end
+=end
