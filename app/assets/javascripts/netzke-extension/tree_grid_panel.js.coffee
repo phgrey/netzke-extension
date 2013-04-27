@@ -3,7 +3,11 @@
 
 Ext.define 'Netzke.mixins.Netzke.Extension.TreeGridPanel', {
   override: 'Netzke.classes.Netzke.Extension.TreeGridPanel',
-# This function has to be overwritten bc of store type changing
+  initComponent: (options)->
+    #this is a fix, without it grid.js throws an exception since v0.8.3
+    # will remove this if my pull request will accepted
+    @filters = {createFilters:->} if !@enableColumnFilters
+    @callParent arguments
   buildStore: ->
      Ext.create('Ext.data.TreeStore', Ext.apply({
         model: @id,
