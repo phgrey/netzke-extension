@@ -24,8 +24,11 @@ Ext.define 'Ext.ux.SelectionColumn', {
         if this.selected.items.indexOf(record) == -1
           this.select record, true
         else this.deselect record
+        #this is a stub needed for selecting for read-only grid
+        old_view_ready = view.viewReady
         view.viewReady = true
         view.refreshNode recordIndex
+        view.viewReady = old_view_ready
       false
     else @callParent arguments
   renderer: (value, metaData, record, rowIndex, colIndex, store, view)->
