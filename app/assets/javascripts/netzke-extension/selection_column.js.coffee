@@ -24,6 +24,7 @@ Ext.define 'Ext.ux.SelectionColumn', {
         if this.selected.items.indexOf(record) == -1
           this.select record, true
         else this.deselect record
+        view.viewReady = true
         view.refreshNode recordIndex
       false
     else @callParent arguments
