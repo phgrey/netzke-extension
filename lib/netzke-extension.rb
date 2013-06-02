@@ -5,7 +5,7 @@ require 'active_support/dependencies'
 # Make components auto-loadable
 ActiveSupport::Dependencies.autoload_paths << File.dirname(__FILE__)
 
-Netzke::Basepack::DataAdapters.send :include, Netzke::Extension::ActiveRecord
+Netzke::Basepack::DataAdapters::ActiveRecordAdapter.send :include, Netzke::Extension::ActiveRecord
 
 module Netzke
   module Extension
