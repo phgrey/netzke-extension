@@ -25,7 +25,7 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "jquery-rails"
   gem.add_development_dependency "rspec-rails"
 
-  gem.add_dependency 'netzke-core', '~> 0.8.0'
-  gem.add_dependency 'netzke-basepack', '~> 0.8.0'
+  gem.add_dependency 'netzke-core', '~> 0.8'
+  gem.add_dependency 'netzke-basepack', '~> 0.8'
   gem.add_dependency 'coffee-script'
 end
