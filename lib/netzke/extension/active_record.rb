@@ -1,0 +1,42 @@
+module Netzke::Extension::ActiveRecord
+
+  def set_record_value_for_attribute(r, a, v, role = :default)
+    v = v.to_time_in_current_zone if v.is_a?(Date) # convert Date to Time
+
+    if a[:setter]
+      a[:setter].call(r, v)
+    elsif r.respond_to?("#{a[:name]}=") && attribute_mass_assignable?(a[:name], role)
+      r.send("#{a[:name]}=", v)
+    elsif association_attr?(a)
+      split = a[:name].to_s.split(/\.|__/)
+      if a[:nested_attribute]
+        # We want:
+        #     set_value_for_attribute({:name => :assoc_1__assoc_2__method, :nested_attribute => true}, 100)
+        # =>
+        #     r.assoc_1.assoc_2.method = 100
+        split.inject(r) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
+      else
+        if split.size == 2
+          # search for association and assign it to r
+          assoc = @model_class.reflect_on_association(split.first.to_sym)
+          assoc_method = split.last
+          if assoc
+            if assoc.macro == :has_one
+              r.send "#{assoc.name}=", assoc.klass.find(v)
+              r.save
+            else
+
+              # set the foreign key to the passed value
+              # not that if a negative value is passed, we reset the association (set it to nil)
+              r.send("#{assoc.foreign_key}=", v.to_i < 0 ? nil : v) if attribute_mass_assignable?(assoc.foreign_key, role)
+            end
+          else
+            logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{@data_class}"
+          end
+        else
+          logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}"
+        end
+      end
+    end
+  end
+end
