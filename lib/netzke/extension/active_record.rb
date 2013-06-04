@@ -24,13 +24,15 @@ module Netzke::Extension::ActiveRecord
               assoc = @model_class.reflect_on_association(split.first.to_sym)
               if assoc
                 if assoc.macro == :has_one
-                  assoc_instance = begin
-                    assoc.klass.find(v)
-                  rescue ActiveRecord::RecordNotFound
-                    nil
+                  if attribute_mass_assignable?(split.first, role) || attribute_mass_assignable?(assoc.foreign_key, role)
+                    assoc_instance = begin
+                      assoc.klass.find(v)
+                    rescue ActiveRecord::RecordNotFound
+                      nil
+                    end
+                    r.send "#{assoc.name}=", assoc_instance
+                    r.save
                   end
-                  r.send "#{assoc.name}=", assoc_instance
-                  r.save
                 else
 
                   # set the foreign key to the passed value
@@ -44,6 +46,14 @@ module Netzke::Extension::ActiveRecord
           end
         end
       end
+
+      def get_assoc_property_type assoc_name, prop_name
+        if prop_name && assoc=@model_class.reflect_on_association(assoc_name.to_sym)
+          assoc_column = assoc.klass.columns_hash[prop_name.to_s]
+          assoc_column.try(:type)
+        end
+      end
+
     end
   end
 end
