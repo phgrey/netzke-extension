@@ -12,7 +12,7 @@ class Netzke::Extension::TreeGridPanel < Netzke::Basepack::Grid
   self.edit_inline_available = false
 
   js_configure do |c|
-    grid_js_path = Gem::Specification.find_by_name("netzke-basepack").gem_dir + '/lib/netzke/basepack/grid/javascripts/'
+    grid_js_path = Netzke::Extension.grid_js_path
     c.extend = "Ext.tree.Panel"
     c.mixin grid_js_path + 'grid.js'
     c.mixin  grid_js_path + 'event_handling.js'
