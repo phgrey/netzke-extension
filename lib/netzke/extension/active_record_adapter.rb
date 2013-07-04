@@ -61,13 +61,68 @@ class Netzke::Extension::ActiveRecordAdapter < Netzke::Basepack::DataAdapters::A
   # parent takes String like "[{"type":"numeric","comparison":"eq","value":145588430,"field":"country_id"}]"
   # we will provide [{property:country_id, value:14558430}]
   def apply_column_filters(relation, column_filter)
-    zst = 1
     if column_filter.is_a? Array
       column_filter= column_filter.map{|f|
         {'comparison'=>'eq', 'value' => f[:value], 'field' => f[:property]}
       }.to_json
     end
     super
+  end
+
+  # Returns association and association method for a column
+  # we do override it bc we do want to operate multi-level (>2) nesting
+  def assoc_and_assoc_method_for_attr(column_name)
+    assoc_names = column_name.split('__')
+    assoc_method = assoc_names.pop
+    return [nil, nil] if assoc_names.count == 0
+    assoc = nil
+    assoc_klass = @model_class.clone
+    assoc_names.each do |method|
+      assoc = assoc_klass.reflect_on_association(method.to_sym)
+      assoc_klass = assoc.klass
+    end
+    [assoc, assoc_method]
+  end
+
+  # we do override this bc we do need to correct show 3-rd level nesting
+  def record_value_for_attribute(r, a, through_association = false)
+    v = if a[:getter]
+          a[:getter].call(r)
+        elsif r.respond_to?("#{a[:name]}")
+          r.send("#{a[:name]}")
+        elsif association_attr?(a)
+          split = a[:name].to_s.split(/\.|__/)
+
+          if through_association
+            split.inject(r) do |r,m| # Do we *really* need to descend deeper than 1 level?
+              return nil if r.nil?
+              if r.respond_to?(m)
+                r.send(m)
+              else
+                logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
+                nil
+              end
+            end
+          else
+            assoc, method = assoc_and_assoc_method_for_attr a[:name]
+            split.pop 2
+            val = split.inject(r) do |r,m|
+              return nil if r.nil?
+              if r.respond_to?(m)
+                r.send(m)
+              else
+                logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
+                nil
+              end
+            end
+            val && val.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}")
+          end
+        end
+
+    # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
+    v = v.to_datetime.to_s(:db) if [ActiveSupport::TimeWithZone].include?(v.class)
+
+    v
   end
 
 end
