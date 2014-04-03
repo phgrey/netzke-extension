@@ -1,3 +1,4 @@
+=begin
 require 'active_record/errors'
 
 module Netzke::Extension::ActiveRecord
@@ -56,4 +57,4 @@ module Netzke::Extension::ActiveRecord
 
     end
   end
-end
+end=end

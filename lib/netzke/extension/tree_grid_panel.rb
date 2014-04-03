@@ -16,6 +16,8 @@ class Netzke::Extension::TreeGridPanel < Netzke::Basepack::Grid
     c.extend = "Ext.tree.Panel"
     c.mixin grid_js_path + 'grid.js'
     c.mixin  grid_js_path + 'event_handling.js'
+    #this works strange - need to look closer
+
     c.properties[:mixins] = ['Netzke.classes.Core.Mixin']
   end
 
